@@ -342,7 +342,18 @@ function product(p){
   const link=LOJA.site+'#'+p.id;
   const texto=`Olha esse mimo da MimoBox 3D: ${p.name}`;
   document.getElementById('sh-wa').href='https://wa.me/?text='+encodeURIComponent(texto+'\n'+link);
-  app.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copiar(link,b.dataset.sh));
+  // foto do produto pronta para o menu de compartilhar do celular (Instagram/TikTok)
+  let foto=null;
+  try{fetch(p.fotoGrande||p.foto).then(r=>r.ok?r.blob():null).then(bl=>{if(bl)foto=new File([bl],p.id+'.jpg',{type:bl.type||'image/jpeg'})}).catch(()=>{})}catch(e){}
+  app.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>{
+    const onde=b.dataset.sh;
+    let pode=false;try{pode=onde!=='link'&&foto&&navigator.canShare&&navigator.canShare({files:[foto]})}catch(e){}
+    if(!pode){copiar(link,onde);return}
+    try{navigator.clipboard.writeText(link).catch(()=>{})}catch(e){}
+    navigator.share({files:[foto],title:p.name+' — MimoBox 3D',text:texto+'\n'+link})
+      .then(()=>toast(onde==='Instagram'?'O link do produto ficou copiado: no Story, cole no sticker de link.':'O link do produto ficou copiado: cole na legenda ou na bio.'))
+      .catch(()=>{});
+  });
   const mais=document.getElementById('sh-mais');if(mais)mais.onclick=()=>{navigator.share({title:p.name+' — MimoBox 3D',text:texto,url:link}).catch(()=>{})};
 }
 function toast(t){const o=document.querySelector('.toast');if(o)o.remove();const d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),4500)}
