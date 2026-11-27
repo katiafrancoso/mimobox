@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MimoBox 3D — Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap">
+<style>
+/* VOICE: carinhoso, leve, prático — fala com você, como um bilhete de presente.
+   IDEA: a vitrine de uma lojinha de mimos: cada peça num fundo tingido, como um cartão de presente.
+   PICTURE: cada produto desenhado em traço grosso de Tinta (como o cubo do logo), que muda de cor quando você escolhe a cor.
+   COLOUR and TYPE: papel Creme, Uva dominante, Menta de apoio, raios Sol/Framboesa/Turquesa como acentos; Lexend + Nunito + Caveat.
+   LAYOUT: coluna de celular (até 560px), centrada; catálogo em 2 colunas; produto em tela própria com link #nome. */
+@font-face{font-family:'Lexend';font-weight:300 800;font-display:swap;src:url('Lexend.woff2') format('woff2')}
+@font-face{font-family:'Nunito';font-weight:300 900;font-display:swap;src:url('Nunito.woff2') format('woff2')}
+:root{color-scheme:light;
+--uva-900:#2E1B44;--uva-700:#523474;--uva-200:#D9CCE8;--uva-50:#F3EEF8;
+--menta-700:#3E8F6E;--menta-500:#95D1B5;--menta-50:#EEF8F3;
+--sol-700:#B57A00;--sol-500:#FFBC38;--sol-50:#FFF6E3;
+--framboesa-700:#8A1744;--framboesa-500:#B5245D;--framboesa-50:#FBEDF2;
+--turquesa-700:#137C79;--turquesa-500:#1FB1AE;--turquesa-50:#E9F7F7;
+--tinta:#1D1E22;--creme:#FBF6EE;--creme-2:#F4EDE1;--areia:#E6DCCB;--pedra:#8C8478;--grafite:#4A4640;
+--wa:#25D366;--wa-dark:#128C4B;
+--display:'Lexend',system-ui,sans-serif;--body:'Nunito',system-ui,sans-serif;--hand:'Caveat',cursive;
+--sh-sm:0 1px 2px rgba(46,27,68,.08),0 2px 6px rgba(46,27,68,.06);--sh-md:0 4px 14px rgba(46,27,68,.10);--sh-lg:0 14px 40px rgba(46,27,68,.16);
+--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--creme-2);color:var(--grafite);font:16px/1.5 var(--body);overflow-x:clip;-webkit-tap-highlight-color:transparent}
+.app{max-width:560px;margin:0 auto;min-height:100vh;background:var(--creme)}
+@media(min-width:600px){.app{box-shadow:var(--sh-lg)}}
+a{color:var(--uva-700)}
+button,input{font:inherit}
+:focus-visible{outline:3px solid var(--turquesa-500);outline-offset:2px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* topo */
+.bio{display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px 20px 8px;text-align:center}
+.avatar{width:104px;height:104px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:var(--sh-md)}
+.avatar img{height:68px}
+.wordmark{height:28px}
+.bio p{margin:0;font-size:17px;color:var(--grafite);max-width:320px}
+.facts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;font:700 14px var(--body);color:var(--uva-700)}
+.facts a,.facts span{display:inline-flex;align-items:center;gap:6px;text-decoration:none;min-height:32px}
+.cta{padding:12px 20px 4px}
+.wa{display:flex;width:100%;justify-content:center;align-items:center;gap:10px;padding:16px 24px;border-radius:999px;background:var(--wa);color:#fff;font:600 18px/1 var(--display);text-decoration:none;box-shadow:var(--sh-md);border:0;cursor:pointer;transition:transform .12s var(--ease),background .12s}
+.wa:hover{background:#1fbf5b}.wa:active{transform:scale(.97)}
+.wa svg{width:24px;height:24px;flex:none}
+.wa small{display:block;font:700 12px var(--body);opacity:.9;margin-top:4px}
+.phone{margin:8px 0 0;text-align:center;font:700 13px var(--body);color:var(--pedra)}
+
+/* como pedir */
+.steps{margin:20px 20px 4px;padding:16px 18px;border-radius:24px;background:var(--uva-50);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.step{display:flex;flex-direction:column;gap:6px;font:700 13px/1.3 var(--body);color:var(--uva-900)}
+.step b{width:28px;height:28px;border-radius:50%;background:var(--uva-700);color:var(--creme);display:grid;place-items:center;font:700 14px var(--display)}
+
+/* categorias */
+.sec{display:flex;align-items:baseline;justify-content:space-between;padding:24px 20px 0}
+.sec h2{margin:0;font:600 24px/1.1 var(--display);color:var(--tinta);letter-spacing:-.02em}
+.sec .hand{font:700 22px var(--hand);color:var(--framboesa-500)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 20px 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid var(--areia);background:#fff;color:var(--grafite);font:700 15px/1 var(--body);cursor:pointer;transition:all .12s var(--ease)}
+.chip[aria-pressed=true]{background:var(--uva-700);border-color:var(--uva-700);color:var(--creme)}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.chip .dot{border:1.5px solid rgba(0,0,0,.15)}
+
+/* grade */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 20px 8px}
+.card{display:flex;flex-direction:column;gap:10px;padding:10px;border-radius:24px;background:#fff;box-shadow:var(--sh-sm);text-decoration:none;color:inherit;transition:transform .22s var(--ease),box-shadow .22s var(--ease)}
+.card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.pic{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;display:grid;place-items:center}
+.pic svg.art{width:86%;height:86%}
+.pic img{width:100%;height:100%;object-fit:cover}
+.badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font:800 11px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pic .badge{position:absolute;bottom:8px;left:8px}
+.card .name{padding:0 6px;font:600 16px/1.25 var(--display);color:var(--tinta)}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:0 6px 6px}
+.swatches{display:flex}.swatches span{width:14px;height:14px;border-radius:50%;border:2px solid #fff;margin-left:-4px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.price{display:inline-flex;align-items:baseline;gap:4px;font-family:var(--display);color:var(--uva-700);white-space:nowrap}
+.price .rs{font-size:.5em;font-weight:600}.price .n{font-weight:700;letter-spacing:-.02em;line-height:1}.price .c{font-size:.55em}
+.price s{font-size:.5em;font-weight:500;opacity:.6;margin-right:2px}
+.empty{grid-column:1/-1;text-align:center;padding:24px;color:var(--pedra)}
+
+/* produto */
+.top{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(251,246,238,.94);backdrop-filter:blur(6px)}
+.back{width:44px;height:44px;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh-sm);display:grid;place-items:center;color:var(--uva-700);text-decoration:none}
+.top img{height:20px}
+.hero{margin:4px 14px 0;border-radius:28px;aspect-ratio:1;max-height:440px;width:calc(100% - 28px)}
+.hero svg.art{width:78%;height:78%}
+.sheet{display:flex;flex-direction:column;gap:20px;padding:22px 20px 28px}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.title{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.title h1{margin:0;font:600 clamp(26px,7vw,32px)/1.08 var(--display);letter-spacing:-.02em;color:var(--tinta);text-wrap:balance}
+.desc{margin:0;font-size:17px}
+.lbl{font:800 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--uva-700);margin-bottom:10px}
+.colors{display:flex;gap:8px;flex-wrap:wrap}
+textarea.txt{resize:vertical;line-height:1.4}
+input.txt,textarea.txt{width:100%;font:600 16px var(--body);padding:14px 16px;border-radius:14px;border:2px solid var(--areia);background:#fff;color:var(--tinta);outline:none}
+input.txt:focus,textarea.txt:focus{border-color:var(--uva-700)}
+.hint{margin:6px 0 0;font-size:13px;color:var(--pedra)}
+.qty{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:2px solid var(--areia);border-radius:999px;background:#fff}
+.stepper button{width:44px;height:44px;border:0;background:none;color:var(--uva-700);display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper output{min-width:36px;text-align:center;font:700 18px var(--display);color:var(--tinta)}
+.time{display:flex;align-items:center;gap:8px;font:700 15px var(--body);color:var(--menta-700)}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;background:var(--uva-50);color:var(--uva-900);font:700 15px var(--body)}
+.total small{display:block;font-weight:600;font-size:12px;color:var(--uva-700)}
+.more{padding:4px 20px 8px}
+.more h2{margin:0 0 12px;font:600 20px var(--display);color:var(--tinta)}
+
+/* modelos */
+.models{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.model{display:flex;flex-direction:column;gap:8px;padding:8px 8px 10px;border-radius:20px;background:#fff;border:2px solid var(--areia);transition:border-color .12s var(--ease)}
+.model.on{border-color:var(--uva-700)}
+.model img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;background:#fff}
+.model .mn{flex:1;display:grid;place-items:center;font:600 15px/1.2 var(--display);color:var(--tinta);text-align:center}
+.model .stepper{align-self:center}
+.msub{display:block;margin-top:4px;font:700 12px/1.3 var(--body);color:var(--uva-700)}
+.model .stepper button{width:40px;height:40px}
+.names{display:flex;flex-direction:column;gap:14px;margin-top:14px}.names label[hidden]{display:none}
+.from{display:block;font:700 12px var(--body);color:var(--pedra);margin-bottom:2px}
+.unit{font:700 13px var(--body);color:var(--pedra);white-space:nowrap}
+.ph{font:700 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--pedra)}
+.hero:has(img){aspect-ratio:auto;max-height:none}.hero img{height:auto;display:block;background:#fff}
+/* rodapé */
+footer{margin-top:20px;padding:28px 20px 36px;background:var(--uva-700);color:var(--creme);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+footer .hand{font:700 28px/1 var(--hand);color:var(--sol-500)}
+footer a{color:var(--creme);font-weight:700}
+footer p{margin:0;font-size:14px}
+footer .note{font-size:12px;opacity:.7}
+@media(max-width:380px){.steps{grid-template-columns:1fr}.step{flex-direction:row;align-items:center}.grid{gap:10px;padding-inline:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+<script>
+{
+// ====== Dados da loja (edite aqui) ======
+const LOJA={
+  whatsapp:'5511982440299',            // DDI + DDD + número, só dígitos
+  instagram:'mimobox3d',
+  frase:'Presentes e lembrancinhas impressos em 3D, feitos sob encomenda.',
+  envio:'Envio para todo o Brasil'
+};
+const CORES={'#FFBC38':'Amarelo','#95D1B5':'Menta','#B5245D':'Framboesa','#523474':'Uva','#1FB1AE':'Turquesa','#FBF6EE':'Creme',
+  '#2F6B3F':'Verde','#C62F2B':'Vermelho','#FFFFFF':'Branco','#EFE3C8':'Creme','#F6C6D2':'Rosa claro'};
+const CATS={Presentes:'menta',Lembrancinhas:'sol',Datas:'framboesa',Casa:'turquesa'};
+// Cada produto pode ter: colors (escolha de cor), nome:true (campo de nome), modelos (escolher quantidade de cada modelo)
+const PRODUTOS=[
+ {id:'porta-bombom-natalino',name:'Porta Bombom Natalino',cat:'Datas',price:9.9,unit:'a unidade',badge:'Natal',tone:'framboesa',
+  foto:'fotos/porta-bombom.jpg',fotoGrande:'fotos/porta-bombom-hero.jpg',
+  desc:'Porta-bombom de Natal impresso em 3D, com encaixe na frente para um bombom redondo (bombom não incluso). Uma lembrancinha perfeita para amigo secreto, ceia em família, equipe ou clientes. Dá para misturar os modelos no mesmo pedido.',
+  time:'A partir de 3 dias, a combinar conforme a quantidade',
+  modelos:[{id:'noel',nome:'Papai Noel',foto:'fotos/pb-noel.jpg'},{id:'rena',nome:'Rena',foto:'fotos/pb-rena.jpg'},{id:'neve',nome:'Boneco de neve',foto:'fotos/pb-neve.jpg'},{id:'arvore',nome:'Árvore',foto:'fotos/pb-arvore.jpg'}]},
+ {id:'enfeite-natal-personalizado',name:'Enfeite de Árvore de Natal Personalizado',cat:'Datas',price:6,unit:'a unidade',badge:'Personalizável',tone:'sol',
+  foto:'fotos/enfeites.jpg',
+  desc:'Enfeite de Natal impresso em 3D, com furinho para pendurar na árvore. Escolha a Sagrada Família, a pata com o nome do seu pet ou o enfeite com o nome de quem você quiser. Lindo para decorar a árvore da família, presentear ou usar como lembrancinha. Dá para misturar os modelos no mesmo pedido.',
+  time:'A partir de 2 dias, a combinar conforme a quantidade',
+  colors:['#2F6B3F','#C62F2B','#FFFFFF','#EFE3C8','#F6C6D2'],corHint:'Quer cores diferentes para cada enfeite? É só avisar no WhatsApp.',
+  modelos:[{id:'familia',nome:'Sagrada Família',foto:'fotos/en-familia.jpg'},{id:'pata',nome:'Pata com nome do pet',foto:'fotos/en-pata.jpg',pede:'Nomes dos pets',ex:'Ex.: Mel, Thor'},{id:'nome',nome:'Enfeite com nome',foto:'fotos/en-nome.jpg',pede:'Nomes para os enfeites',ex:'Ex.: Emma, Theo'},{id:'kit6',nome:'Kit com 6 unidades',foto:'fotos/enfeites.jpg',price:30,un:6,sub:'Modelos e nomes a combinar'}]},
+ {id:'bola-natal-porta-bombom',name:'Bola de Natal Porta Bombom',cat:'Datas',price:6,unit:'a unidade',badge:'Natal',tone:'framboesa',
+  foto:'fotos/bolas.jpg',
+  desc:'Bola de Natal termoformada, com floco de neve em relevo e espaço para um bombom dentro (bombom não incluso). Fica linda pendurada na árvore e é uma lembrancinha perfeita para a ceia, o amigo secreto ou a equipe.',
+  time:'A partir de 2 dias, a combinar conforme a quantidade',
+  colors:['#C62F2B','#2F6B3F','#FFFFFF','#EFE3C8','#F6C6D2'],corHint:'Quer cores diferentes no mesmo pedido? É só avisar no WhatsApp.',modLabel:'Avulsa ou kit',
+  modelos:[{id:'un',nome:'Bola avulsa',foto:'fotos/bola-un.jpg'},{id:'kit6',nome:'Kit com 6 unidades',foto:'fotos/bolas.jpg',price:30,un:6,sub:'Cores a combinar'}]},
+ {id:'anjo-vela-led',name:'Anjo com Vela LED',cat:'Datas',price:25,from:true,badge:'Natal',tone:'framboesa',
+  foto:'fotos/anjo.jpg',
+  desc:'Anjo de Natal impresso em 3D, com corpo em trama vazada e auréola acobreada. Acompanha vela de LED: acesa, a luz passa pela trama e deixa a casa mais aconchegante. Lindo na mesa da ceia, no aparador ou como presente.',
+  time:'A partir de 3 dias, a combinar conforme a quantidade',
+  colors:['#FFFFFF','#EFE3C8'],
+  modLabel:'Tamanho',
+  modelos:[{id:'p',nome:'Tamanho P',foto:'fotos/anjo-sq.jpg',price:25,sub:'aprox. 14 cm de altura'},{id:'g',nome:'Tamanho G',foto:'fotos/anjo-sq.jpg',price:35,sub:'aprox. 18 cm de altura'}],
+  inclui:'Vela de LED inclusa'},
+ {id:'arvore-decorativa-personalizada',name:'Árvore Decorativa Personalizada',cat:'Datas',price:39.9,from:true,badge:'Personalizável',tone:'sol',
+  foto:'fotos/arvore.jpg',
+  desc:'Árvore de Natal feita com os nomes de quem você ama, empilhados em letras impressas em 3D, com estrela no topo e "Feliz Natal" na base. Um presente cheio de significado para a família, os amigos ou a equipe.',
+  time:'A partir de 3 dias, a combinar conforme a quantidade',
+  modLabel:'Tamanho',
+  modelos:[{id:'p',nome:'Tamanho P',foto:'fotos/arvore-sq.jpg',price:39.9,sub:'aprox. 12 cm de altura'},{id:'m',nome:'Tamanho M',foto:'fotos/arvore-sq.jpg',price:44.9,sub:'aprox. 15 cm de altura'},{id:'g',nome:'Tamanho G',foto:'fotos/arvore-sq.jpg',price:49.9,sub:'aprox. 20 cm de altura'}],
+  lista:{label:'Nomes da árvore',ex:'Ex.: Aline, Luciane, Fernanda, Danielle, Fernando, Cristiane',hint:'Separe os nomes por vírgula, na ordem de cima para baixo. Se for mais de uma árvore com nomes diferentes, é só combinar no WhatsApp.'}}
+];
+// ========================================
+
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const ico=(n,cls='i')=>`<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const wa=msg=>'https://wa.me/'+LOJA.whatsapp+'?text='+encodeURIComponent(msg);
+const TONE={uva:['var(--uva-50)','var(--uva-700)'],menta:['var(--menta-50)','var(--menta-700)'],sol:['var(--sol-50)','var(--sol-700)'],framboesa:['var(--framboesa-50)','var(--framboesa-700)'],turquesa:['var(--turquesa-50)','var(--turquesa-700)']};
+const badge=(t,tone)=>{const [b,f]=TONE[tone]||TONE.uva;return `<span class="badge" style="background:${b};color:${f}">${esc(t)}</span>`};
+const tint=p=>(TONE[CATS[p.cat]]||TONE.uva)[0];
+function price(v,old,size){const [r,c]=v.toFixed(2).split('.');return `<span class="price" style="font-size:${size}px">${old?`<s>${brl(old)}</s>`:''}<span class="rs">R$</span><span class="n">${r}<span class="c">,${c}</span></span></span>`}
+const pic=(p,cls='')=>{const f=cls&&p.fotoGrande||p.foto;return `<div class="pic ${cls}" style="background:${f?'#fff':tint(p)}">${f?`<img src="${esc(f)}" alt="${esc(p.name)}">`:'<span class="ph">foto em breve</span>'}${cls?'':(p.badge?badge(p.badge,p.tone):'')}</div>`};
+
+let filtro='Tudo';
+const state={};
+function catalog(){
+  const usadas=Object.keys(CATS).filter(c=>PRODUTOS.some(p=>p.cat===c));
+  if(filtro!=='Tudo'&&!usadas.includes(filtro))filtro='Tudo';
+  const cats=['Tudo',...usadas];
+  const list=PRODUTOS.filter(p=>filtro==='Tudo'||p.cat===filtro);
+  app.innerHTML=`
+  <header class="bio">
+    <div class="avatar"><img src="logo-mark.png" alt=""></div>
+    <img class="wordmark" src="wordmark.png" alt="MimoBox 3D">
+    <p>${esc(LOJA.frase)}</p>
+    <div class="facts"><a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">${ico('ig')}@${esc(LOJA.instagram)}</a><span>${ico('truck')}${esc(LOJA.envio)}</span></div>
+  </header>
+  <div class="cta"><a class="wa" href="${wa('Oi! Vim pelo link da bio 💜')}" target="_blank" rel="noopener">${ico('wa','')}Fazer meu pedido</a></div>
+  <div class="steps" aria-label="Como pedir">
+    <div class="step"><b>1</b>Escolha a peça</div>
+    <div class="step"><b>2</b>Monte seu pedido</div>
+    <div class="step"><b>3</b>Finalize no WhatsApp</div>
+  </div>
+  <div class="sec"><h2>Catálogo</h2><span class="hand">feito com carinho ♡</span></div>
+  ${cats.length>2?`<div class="chips" role="group" aria-label="Categorias">${cats.map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${filtro===c}">${c!=='Tudo'?`<span class="dot" style="background:var(--${CATS[c]}-500)"></span>`:''}${c}</button>`).join('')}</div>`:''}
+  <div class="grid">${list.length?list.map(card).join(''):'<p class="empty">Nada por aqui ainda.</p>'}</div>
+  ${foot()}`;
+  app.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filtro=b.dataset.cat;try{sessionStorage.setItem('mimo-cat',filtro)}catch(e){};catalog()});
+}
+function card(p){
+  const extra=p.colors?`<div class="swatches" aria-label="${p.colors.length} cores">${p.colors.map(c=>`<span style="background:${c}"></span>`).join('')}</div>`:p.unit?`<span class="unit">${esc(p.unit)}</span>`:'';
+  return `<a class="card" href="#${p.id}">${pic(p)}<div class="name">${esc(p.name)}</div><div class="row"><span>${p.from?'<small class="from">a partir de</small>':''}${price(p.price,p.oldPrice,20)}</span>${extra}</div></a>`}
+function foot(){return `<footer><span class="hand">Um mimo que dura pra sempre</span>
+  <p><a href="${wa('Oi! Vim pelo link da bio 💜')}" target="_blank" rel="noopener">WhatsApp</a> · Instagram <a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">@${esc(LOJA.instagram)}</a></p></footer>`}
+const stepper=(id,q,min)=>`<div class="stepper"><button data-dec="${id}" aria-label="Diminuir" ${q<=min?'disabled':''}>${ico('minus')}</button><output data-q="${id}">${q}</output><button data-inc="${id}" aria-label="Aumentar">${ico('plus')}</button></div>`;
+
+function product(p){
+  const s=state[p.id]||(state[p.id]={cor:p.colors?p.colors[0]:null,nome:'',qtd:1,mix:Object.fromEntries((p.modelos||[]).map(m=>[m.id,0])),names:{}});
+  const others=PRODUTOS.filter(o=>o.id!==p.id).slice(0,2);
+  app.innerHTML=`
+  <div class="top"><a class="back" href="#" aria-label="Voltar ao catálogo">${ico('back')}</a><img src="wordmark.png" alt="MimoBox 3D"></div>
+  ${pic(p,'hero')}
+  <div class="sheet">
+    <div class="tags">${badge(p.cat,CATS[p.cat])}${p.badge?badge(p.badge,p.tone):''}</div>
+    <div class="title"><h1>${esc(p.name)}</h1><span>${p.from?'<small class="from">a partir de</small>':''}${price(p.price,p.oldPrice,30)}${p.unit?` <span class="unit">${esc(p.unit)}</span>`:''}</span></div>
+    <p class="desc">${esc(p.desc)}</p>
+    ${p.modelos?`<div><div class="lbl">${esc(p.modLabel||'Escolha os modelos')}</div><div class="models">${p.modelos.map(m=>`<div class="model${s.mix[m.id]?' on':''}" data-m="${m.id}"><img src="${esc(m.foto)}" alt="${esc(m.nome)}"><div class="mn"><span>${esc(m.nome)}${m.price?`<small class="msub">${brl(m.price)}${m.sub?' · '+esc(m.sub):''}</small>`:''}</span></div>${stepper(m.id,s.mix[m.id],0)}</div>`).join('')}</div>
+      ${p.modelos.some(m=>m.pede)?`<div class="names">${p.modelos.filter(m=>m.pede).map(m=>`<label data-nm="${m.id}" ${s.mix[m.id]?'':'hidden'}><div class="lbl">${esc(m.pede)}</div><input class="txt" data-names="${m.id}" maxlength="300" autocomplete="off" placeholder="${esc(m.ex)}" value="${esc(s.names[m.id]||'')}"><p class="hint">Um nome por enfeite, separados por vírgula.</p></label>`).join('')}</div>`:''}</div>`:''}
+    ${p.colors?`<div><div class="lbl">Cor</div><div class="colors" role="group" aria-label="Cor">${p.colors.map(c=>`<button class="chip" data-cor="${c}" aria-pressed="${s.cor===c}"><span class="dot" style="background:${c}"></span>${CORES[c]}</button>`).join('')}</div>${p.corHint?`<p class="hint">${esc(p.corHint)}</p>`:''}</div>`:''}
+    ${p.lista?`<label><div class="lbl">${esc(p.lista.label)}</div><textarea class="txt" id="lista" rows="3" maxlength="400" placeholder="${esc(p.lista.ex)}">${esc(s.lista||'')}</textarea><p class="hint">${esc(p.lista.hint)}</p></label>`:''}
+    ${p.nome?`<label><div class="lbl">Nome (opcional)</div><input class="txt" id="nome" maxlength="20" autocomplete="off" placeholder="Ex.: Luna" value="${esc(s.nome)}"></label>`:''}
+    ${p.modelos?'':`<div class="qty"><div class="lbl" style="margin:0">Quantidade</div>${stepper('q',s.qtd,1)}</div>`}
+    <div class="time">${ico('clock')}Produção: ${esc(p.time)}</div>${p.inclui?`<div class="time">${ico('plus')}${esc(p.inclui)}</div>`:''}
+    <div class="total"><div><span id="totl">Total</span><small>Frete combinado no WhatsApp</small></div><span id="tot"></span></div>
+    <a class="wa" id="pedir" target="_blank" rel="noopener">${ico('wa','')}<span>Encomendar pelo WhatsApp</span></a>
+  </div>
+  ${others.length?`<div class="more"><h2>Você também pode gostar</h2><div class="grid" style="padding:0">${others.map(card).join('')}</div></div>`:''}
+  ${foot()}`;
+  const qty=()=>p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.un||1),0):s.qtd;
+  const total=()=>p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.price||p.price),0):p.price*s.qtd;
+  const upd=()=>{
+    const n=qty();
+    app.querySelectorAll('[data-q]').forEach(o=>{const id=o.dataset.q,v=id==='q'?s.qtd:s.mix[id];o.textContent=v;app.querySelector(`[data-dec="${id}"]`).disabled=v<=(id==='q'?1:0);const t=o.closest('.model');if(t)t.classList.toggle('on',v>0);const l=app.querySelector(`[data-nm="${id}"]`);if(l)l.hidden=!v});
+    document.getElementById('totl').textContent=p.modelos?(n?`Total · ${n} ${n>1?'unidades':'unidade'}`:'Escolha a quantidade de cada modelo'):'Total';
+    document.getElementById('tot').innerHTML=n?price(total(),null,26):'';
+    let msg=`Oi! Vim pelo link da bio 💜\nQuero encomendar: ${p.name}`;
+    if(p.modelos){const it=p.modelos.filter(m=>s.mix[m.id]>0);msg+=it.length?'\n'+it.map(m=>`• ${s.mix[m.id]}× ${m.nome}`+(m.pede&&s.names[m.id]?` (nomes: ${s.names[m.id]})`:'')+(m.sub?` (${m.sub.toLowerCase()})`:'')).join('\n'):'\nQuero ajuda para escolher os modelos.';if(s.cor)msg+=`\n• Cor: ${CORES[s.cor]}`;if(s.lista)msg+=`\n• Nomes: ${s.lista}`}
+    else{if(s.cor)msg+=`\n• Cor: ${CORES[s.cor]}`;if(s.nome)msg+=`\n• Nome: ${s.nome}`;msg+=`\n• Quantidade: ${s.qtd}`}
+    if(n)msg+=`\n• Total: ${brl(total())} (sem frete)`;
+    document.getElementById('pedir').href=wa(msg);
+  };
+  app.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{const id=b.dataset.inc;if(id==='q'){if(s.qtd<999)s.qtd++}else if(s.mix[id]<999)s.mix[id]++;upd()});
+  app.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const id=b.dataset.dec;if(id==='q'){if(s.qtd>1)s.qtd--}else if(s.mix[id]>0)s.mix[id]--;upd()});
+  app.querySelectorAll('[data-cor]').forEach(b=>b.onclick=()=>{s.cor=b.dataset.cor;app.querySelectorAll('[data-cor]').forEach(x=>x.setAttribute('aria-pressed',x===b));upd()});
+  app.querySelectorAll('[data-names]').forEach(i=>i.oninput=()=>{s.names[i.dataset.names]=i.value.trim();upd()});
+  const ls=document.getElementById('lista');if(ls)ls.oninput=()=>{s.lista=ls.value.trim();upd()};
+  const nm=document.getElementById('nome');if(nm)nm.oninput=e=>{s.nome=e.target.value.trim();upd()};
+  upd();
+}
+
+function route(){
+  const id=decodeURIComponent(location.hash.slice(1));
+  const p=PRODUTOS.find(x=>x.id===id);
+  if(p){product(p);document.title=p.name+' — MimoBox 3D';window.scrollTo(0,0)}
+  else{catalog();document.title='MimoBox 3D — Catálogo'}
+}
+try{filtro=sessionStorage.getItem('mimo-cat')||'Tudo'}catch(e){}
+window.addEventListener('hashchange',route);
+route();
+}
+</script>
+</body>
+</html>
