@@ -197,7 +197,7 @@ const PRODUTOS=[
 
 const app=document.getElementById('app');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}).replace(/\s/g,' ');
 const ico=(n,cls='i')=>`<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const wa=msg=>'https://wa.me/'+LOJA.whatsapp+'?text='+encodeURIComponent(msg);
 const TONE={uva:['var(--uva-50)','var(--uva-700)'],menta:['var(--menta-50)','var(--menta-700)'],sol:['var(--sol-50)','var(--sol-700)'],framboesa:['var(--framboesa-50)','var(--framboesa-700)'],turquesa:['var(--turquesa-50)','var(--turquesa-700)']};
@@ -220,7 +220,7 @@ function catalog(){
     <p>${esc(LOJA.frase)}</p>
     <div class="facts"><a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">${ico('ig')}@${esc(LOJA.instagram)}</a><span>${ico('truck')}${esc(LOJA.envio)}</span></div>
   </header>
-  <div class="cta"><a class="wa" href="${wa('Oi! Vim pelo link da bio 💜')}" target="_blank" rel="noopener">${ico('wa','')}Fazer meu pedido</a></div>
+  <div class="cta"><a class="wa" href="${wa('Oi! Vim pelo link da bio.')}" target="_blank" rel="noopener">${ico('wa','')}Fazer meu pedido</a></div>
   <div class="steps" aria-label="Como pedir">
     <div class="step"><b>1</b>Escolha a peça</div>
     <div class="step"><b>2</b>Monte seu pedido</div>
@@ -236,7 +236,7 @@ function card(p){
   const extra=p.colors?`<div class="swatches" aria-label="${p.colors.length} cores">${p.colors.map(c=>`<span style="background:${c}"></span>`).join('')}</div>`:p.unit?`<span class="unit">${esc(p.unit)}</span>`:'';
   return `<a class="card" href="#${p.id}">${pic(p)}<div class="name">${esc(p.name)}</div><div class="row"><span>${p.from?'<small class="from">a partir de</small>':''}${price(p.price,p.oldPrice,20)}</span>${extra}</div></a>`}
 function foot(){return `<footer><span class="hand">Um mimo que dura pra sempre</span>
-  <p><a href="${wa('Oi! Vim pelo link da bio 💜')}" target="_blank" rel="noopener">WhatsApp</a> · Instagram <a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">@${esc(LOJA.instagram)}</a></p></footer>`}
+  <p><a href="${wa('Oi! Vim pelo link da bio.')}" target="_blank" rel="noopener">WhatsApp</a> · Instagram <a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">@${esc(LOJA.instagram)}</a></p></footer>`}
 const stepper=(id,q,min)=>`<div class="stepper"><button data-dec="${id}" aria-label="Diminuir" ${q<=min?'disabled':''}>${ico('minus')}</button><output data-q="${id}">${q}</output><button data-inc="${id}" aria-label="Aumentar">${ico('plus')}</button></div>`;
 
 function product(p){
@@ -268,10 +268,10 @@ function product(p){
     app.querySelectorAll('[data-q]').forEach(o=>{const id=o.dataset.q,v=id==='q'?s.qtd:s.mix[id];o.textContent=v;app.querySelector(`[data-dec="${id}"]`).disabled=v<=(id==='q'?1:0);const t=o.closest('.model');if(t)t.classList.toggle('on',v>0);const l=app.querySelector(`[data-nm="${id}"]`);if(l)l.hidden=!v});
     document.getElementById('totl').textContent=p.modelos?(n?`Total · ${n} ${n>1?'unidades':'unidade'}`:'Escolha a quantidade de cada modelo'):'Total';
     document.getElementById('tot').innerHTML=n?price(total(),null,26):'';
-    let msg=`Oi! Vim pelo link da bio 💜\nQuero encomendar: ${p.name}`;
-    if(p.modelos){const it=p.modelos.filter(m=>s.mix[m.id]>0);msg+=it.length?'\n'+it.map(m=>`• ${s.mix[m.id]}× ${m.nome}`+(m.pede&&s.names[m.id]?` (nomes: ${s.names[m.id]})`:'')+(m.sub?` (${m.sub.toLowerCase()})`:'')).join('\n'):'\nQuero ajuda para escolher os modelos.';if(s.cor)msg+=`\n• Cor: ${CORES[s.cor]}`;if(s.lista)msg+=`\n• Nomes: ${s.lista}`}
-    else{if(s.cor)msg+=`\n• Cor: ${CORES[s.cor]}`;if(s.nome)msg+=`\n• Nome: ${s.nome}`;msg+=`\n• Quantidade: ${s.qtd}`}
-    if(n)msg+=`\n• Total: ${brl(total())} (sem frete)`;
+    let msg=`Oi! Vim pelo link da bio.\nQuero encomendar: ${p.name}`;
+    if(p.modelos){const it=p.modelos.filter(m=>s.mix[m.id]>0);msg+=it.length?'\n'+it.map(m=>`- ${s.mix[m.id]}× ${m.nome}`+(m.pede&&s.names[m.id]?` (nomes: ${s.names[m.id]})`:'')+(m.sub?` (${m.sub.toLowerCase()})`:'')).join('\n'):'\nQuero ajuda para escolher os modelos.';if(s.cor)msg+=`\n- Cor: ${CORES[s.cor]}`;if(s.lista)msg+=`\n- Nomes: ${s.lista}`}
+    else{if(s.cor)msg+=`\n- Cor: ${CORES[s.cor]}`;if(s.nome)msg+=`\n- Nome: ${s.nome}`;msg+=`\n- Quantidade: ${s.qtd}`}
+    if(n)msg+=`\n- Total: ${brl(total())} (sem frete)`;
     document.getElementById('pedir').href=wa(msg);
   };
   app.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{const id=b.dataset.inc;if(id==='q'){if(s.qtd<999)s.qtd++}else if(s.mix[id]<999)s.mix[id]++;upd()});
