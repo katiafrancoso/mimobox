@@ -125,6 +125,32 @@ input.txt:focus,textarea.txt:focus{border-color:var(--uva-700)}
 .unit{font:700 13px var(--body);color:var(--pedra);white-space:nowrap}
 .ph{font:700 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--pedra)}
 .hero:has(img){aspect-ratio:auto;max-height:none}.hero img{height:auto;display:block;background:#fff}
+/* pedido (carrinho) */
+.btn{display:flex;width:100%;justify-content:center;align-items:center;gap:10px;padding:16px 24px;border-radius:999px;font:600 18px/1 var(--display);text-decoration:none;border:2px solid var(--uva-700);cursor:pointer;transition:transform .12s var(--ease),opacity .12s}
+.btn:active{transform:scale(.97)}.btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn.pri{background:var(--uva-700);color:var(--creme);box-shadow:var(--sh-md)}
+.btn.out{background:transparent;color:var(--uva-700)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.solo{display:block;text-align:center;font:700 14px var(--body);color:var(--uva-700);padding:6px}
+.added{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:20px;background:var(--menta-50);border:2px solid var(--menta-500)}
+.added p{margin:0;display:flex;align-items:center;gap:8px;font:700 15px var(--body);color:var(--menta-700)}
+.added .row2{display:flex;flex-direction:column;gap:8px}
+.added .btn{padding:13px 14px;font-size:15px}
+.bag{position:fixed;z-index:5;left:50%;bottom:14px;transform:translateX(-50%);width:min(536px,calc(100% - 24px));display:flex;align-items:center;gap:12px;padding:12px 14px 12px 18px;border-radius:999px;background:var(--uva-900);color:var(--creme);text-decoration:none;box-shadow:var(--sh-lg);font:700 15px var(--body)}
+.bag .cnt{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--sol-500);color:var(--tinta);font:700 13px var(--display)}
+.bag .go{margin-left:auto;padding:9px 16px;border-radius:999px;background:var(--creme);color:var(--uva-700);font:700 14px var(--body);white-space:nowrap}
+body.hasbag footer{padding-bottom:104px}
+.cart{display:flex;flex-direction:column;gap:12px;padding:8px 20px 4px}
+.cart h1{margin:0 0 4px;font:600 28px/1.1 var(--display);color:var(--tinta)}
+.item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px;border-radius:20px;background:#fff;box-shadow:var(--sh-sm)}
+.item img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:#fff}
+.item h3{margin:0 0 4px;font:600 16px/1.2 var(--display);color:var(--tinta)}
+.item ul{margin:0;padding:0;list-style:none;font-size:14px;line-height:1.4;color:var(--grafite)}
+.item .sub{margin-top:6px;font:700 15px var(--display);color:var(--uva-700)}
+.rm{width:40px;height:40px;border:0;border-radius:50%;background:var(--creme-2);color:var(--grafite);display:grid;place-items:center;cursor:pointer}
+.cart .total{margin-top:4px}
+.clear{align-self:center;border:0;background:none;font:700 13px var(--body);color:var(--pedra);text-decoration:underline;cursor:pointer;padding:8px}
+.vazio{text-align:center;padding:32px 12px;color:var(--grafite)}
 /* rodapé */
 footer{margin-top:20px;padding:28px 20px 36px;background:var(--uva-700);color:var(--creme);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
 footer .hand{font:700 28px/1 var(--hand);color:var(--sol-500)}
@@ -145,6 +171,9 @@ footer .note{font-size:12px;opacity:.7}
   <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
 </svg>
 <script>
 {
@@ -225,11 +254,11 @@ function catalog(){
     <p>${esc(LOJA.frase)}</p>
     <div class="facts"><a href="https://www.instagram.com/${esc(LOJA.instagram)}/" target="_blank" rel="noopener">${ico('ig')}@${esc(LOJA.instagram)}</a><span>${ico('truck')}${esc(LOJA.envio)}</span></div>
   </header>
-  <div class="cta"><a class="wa" href="${wa('Oi! Vim pelo link da bio.')}" target="_blank" rel="noopener">${ico('wa','')}Fazer meu pedido</a></div>
+  <div class="cta">${cart.length?`<a class="btn pri" href="#pedido">${ico('bag','')}Ver meu pedido (${cart.length})</a>`:`<a class="wa" href="${wa('Oi! Vim pelo link da bio.')}" target="_blank" rel="noopener">${ico('wa','')}Fazer meu pedido</a>`}</div>
   <div class="steps" aria-label="Como pedir">
     <div class="step"><b>1</b>Escolha a peça</div>
-    <div class="step"><b>2</b>Monte seu pedido</div>
-    <div class="step"><b>3</b>Finalize no WhatsApp</div>
+    <div class="step"><b>2</b>Adicione ao pedido</div>
+    <div class="step"><b>3</b>Envie pelo WhatsApp</div>
   </div>
   <div class="sec"><h2>Catálogo</h2><span class="hand">feito com carinho ♡</span></div>
   ${cats.length>2?`<div class="chips" role="group" aria-label="Categorias">${cats.map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${filtro===c}">${c!=='Tudo'?`<span class="dot" style="background:var(--${CATS[c]}-500)"></span>`:''}${c}</button>`).join('')}</div>`:''}
@@ -262,37 +291,82 @@ function product(p){
     ${p.modelos?'':`<div class="qty"><div class="lbl" style="margin:0">Quantidade</div>${stepper('q',s.qtd,1)}</div>`}
     <div class="time">${ico('clock')}Produção: ${esc(p.time)}</div>${p.inclui?`<div class="time">${ico('plus')}${esc(p.inclui)}</div>`:''}
     <div class="total"><div><span id="totl">Total</span><small>Frete combinado no WhatsApp</small></div><span id="tot"></span></div>
-    <a class="wa" id="pedir" target="_blank" rel="noopener">${ico('wa','')}<span>Encomendar pelo WhatsApp</span></a>
+    <div id="acoes"><button class="btn pri" id="add">${ico('bag','')}Adicionar ao pedido</button>
+    <a class="solo" id="pedir" target="_blank" rel="noopener">ou peça só este produto pelo WhatsApp</a></div>
   </div>
   ${others.length?`<div class="more"><h2>Você também pode gostar</h2><div class="grid" style="padding:0">${others.map(card).join('')}</div></div>`:''}
   ${foot()}`;
-  const qty=()=>p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.un||1),0):s.qtd;
-  const total=()=>p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.price||p.price),0):p.price*s.qtd;
   const upd=()=>{
-    const n=qty();
+    const r=resumo(p,s),n=r.n;
     app.querySelectorAll('[data-q]').forEach(o=>{const id=o.dataset.q,v=id==='q'?s.qtd:s.mix[id];o.textContent=v;app.querySelector(`[data-dec="${id}"]`).disabled=v<=(id==='q'?1:0);const t=o.closest('.model');if(t)t.classList.toggle('on',v>0);const l=app.querySelector(`[data-nm="${id}"]`);if(l)l.hidden=!v});
     document.getElementById('totl').textContent=p.modelos?(n?`Total · ${n} ${n>1?'unidades':'unidade'}`:'Escolha a quantidade de cada modelo'):'Total';
-    document.getElementById('tot').innerHTML=n?price(total(),null,26):'';
-    let msg=`Oi! Vim pelo link da bio.\nQuero encomendar: ${p.name}`;
-    if(p.modelos){const it=p.modelos.filter(m=>s.mix[m.id]>0);msg+=it.length?'\n'+it.map(m=>`- ${s.mix[m.id]}× ${m.nome}`+(m.pede&&s.names[m.id]?` (nomes: ${s.names[m.id]})`:'')+(m.sub?` (${m.sub.toLowerCase()})`:'')).join('\n'):'\nQuero ajuda para escolher os modelos.';if(s.cor)msg+=`\n- Cor: ${CORES[s.cor]}`;if(s.lista)msg+=`\n- Nomes: ${s.lista}`}
-    else{if(s.cor)msg+=`\n- Cor: ${CORES[s.cor]}`;if(s.nome)msg+=`\n- Nome: ${s.nome}`;msg+=`\n- Quantidade: ${s.qtd}`}
-    if(n)msg+=`\n- Total: ${brl(total())} (sem frete)`;
-    document.getElementById('pedir').href=wa(msg);
+    document.getElementById('tot').innerHTML=n?price(r.total,null,26):'';
+    const add=document.getElementById('add');if(add)add.disabled=!n;
+    const pd=document.getElementById('pedir');
+    if(pd)pd.href=wa(`Oi! Vim pelo link da bio.\nQuero encomendar: ${p.name}`+(r.L.length?'\n'+r.L.map(x=>'- '+x).join('\n'):'\nQuero ajuda para escolher os modelos.')+(n?`\n- Total: ${brl(r.total)} (sem frete)`:''));
   };
+  const bindAdd=()=>{const b=document.getElementById('add');if(b)b.onclick=()=>{
+    const r=resumo(p,s);if(!r.n)return;
+    cart.push({id:p.id,name:p.name,foto:p.foto,L:r.L,total:r.total,n:r.n});save();
+    state[p.id]=null;product(p);
+    document.getElementById('acoes').innerHTML=`<div class="added" role="status"><p>${ico('check')}Adicionado ao seu pedido</p><div class="row2"><a class="btn out" href="#">Continuar comprando</a><a class="btn pri" href="#pedido">Ver pedido (${cart.length})</a></div></div>`;
+    bar();
+  }};
   app.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{const id=b.dataset.inc;if(id==='q'){if(s.qtd<999)s.qtd++}else if(s.mix[id]<999)s.mix[id]++;upd()});
   app.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const id=b.dataset.dec;if(id==='q'){if(s.qtd>1)s.qtd--}else if(s.mix[id]>0)s.mix[id]--;upd()});
   app.querySelectorAll('[data-cor]').forEach(b=>b.onclick=()=>{s.cor=b.dataset.cor;app.querySelectorAll('[data-cor]').forEach(x=>x.setAttribute('aria-pressed',x===b));upd()});
   app.querySelectorAll('[data-names]').forEach(i=>i.oninput=()=>{s.names[i.dataset.names]=i.value.trim();upd()});
   const ls=document.getElementById('lista');if(ls)ls.oninput=()=>{s.lista=ls.value.trim();upd()};
   const nm=document.getElementById('nome');if(nm)nm.oninput=e=>{s.nome=e.target.value.trim();upd()};
-  upd();
+  upd();bindAdd();
+}
+
+// ---- pedido (carrinho): guardado só neste navegador ----
+let cart=[];
+try{cart=JSON.parse(localStorage.getItem('mimo-pedido')||'[]');if(!Array.isArray(cart))cart=[]}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem('mimo-pedido',JSON.stringify(cart))}catch(e){}};
+const cartTotal=()=>cart.reduce((a,i)=>a+i.total,0);
+function resumo(p,s){
+  const n=p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.un||1),0):s.qtd;
+  const total=p.modelos?p.modelos.reduce((a,m)=>a+s.mix[m.id]*(m.price||p.price),0):p.price*s.qtd;
+  const L=[];
+  if(p.modelos){p.modelos.filter(m=>s.mix[m.id]>0).forEach(m=>L.push(`${s.mix[m.id]}× ${m.nome}`+(m.pede&&s.names[m.id]?` (nomes: ${s.names[m.id]})`:'')+(m.sub?` (${m.sub.toLowerCase()})`:'')));if(s.cor)L.push(`Cor: ${CORES[s.cor]}`);if(s.lista)L.push(`Nomes: ${s.lista}`)}
+  else{if(s.cor)L.push(`Cor: ${CORES[s.cor]}`);if(s.nome)L.push(`Nome: ${s.nome}`);L.push(`Quantidade: ${s.qtd}`)}
+  return {n,total,L};
+}
+function bar(){
+  const old=document.querySelector('.bag');if(old)old.remove();
+  const show=cart.length&&location.hash!=='#pedido';
+  document.body.classList.toggle('hasbag',!!show);
+  if(!show)return;
+  const a=document.createElement('a');a.className='bag';a.href='#pedido';
+  a.innerHTML=`${ico('bag')}<span class="cnt">${cart.length}</span><span style="white-space:nowrap">${brl(cartTotal())}</span><span class="go">Ver pedido</span>`;
+  document.body.appendChild(a);
+}
+function pedido(){
+  const msg=()=>'Oi! Vim pelo link da bio.\nQuero encomendar:\n\n'+cart.map((i,k)=>`${k+1}) ${i.name}\n`+i.L.map(x=>'- '+x).join('\n')+`\n- Subtotal: ${brl(i.total)}`).join('\n\n')+`\n\nTotal: ${brl(cartTotal())} (sem frete)`;
+  app.innerHTML=`
+  <div class="top"><a class="back" href="#" aria-label="Voltar ao catálogo">${ico('back')}</a><img src="wordmark.png" alt="MimoBox 3D"></div>
+  <div class="cart"><h1>Seu pedido</h1>
+  ${cart.length?cart.map((i,k)=>`<div class="item"><img src="${esc(i.foto||'logo-mark.png')}" alt=""><div><h3>${esc(i.name)}</h3><ul>${i.L.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="sub">${brl(i.total)}</div></div><button class="rm" data-rm="${k}" aria-label="Tirar ${esc(i.name)} do pedido">${ico('x')}</button></div>`).join('')+`
+    <div class="total"><div>Total · ${cart.length} ${cart.length>1?'itens':'item'}<small>Frete combinado no WhatsApp</small></div>${price(cartTotal(),null,26)}</div>
+    <a class="wa" href="${wa(msg())}" target="_blank" rel="noopener">${ico('wa','')}Enviar pedido pelo WhatsApp</a>
+    <a class="btn out" href="#">Continuar comprando</a>
+    <button class="clear" id="limpar">Já enviei, limpar o pedido</button>`
+  :`<div class="vazio"><p>Seu pedido ainda está vazio.</p><a class="btn pri" href="#">Ver o catálogo</a></div>`}
+  </div>
+  ${foot()}`;
+  app.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.rm,1);save();pedido()});
+  const l=document.getElementById('limpar');if(l)l.onclick=()=>{cart=[];save();pedido()};
 }
 
 function route(){
   const id=decodeURIComponent(location.hash.slice(1));
   const p=PRODUTOS.find(x=>x.id===id);
   if(p){product(p);document.title=p.name+' — MimoBox 3D';window.scrollTo(0,0)}
+  else if(id==='pedido'){pedido();document.title='Seu pedido — MimoBox 3D';window.scrollTo(0,0)}
   else{catalog();document.title='MimoBox 3D — Catálogo'}
+  bar();
 }
 try{filtro=sessionStorage.getItem('mimo-cat')||'Tudo'}catch(e){}
 window.addEventListener('hashchange',route);
