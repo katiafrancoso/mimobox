@@ -274,8 +274,14 @@ function catalog(){
   <div class="sec"><h2>Catálogo</h2><span class="hand">feito com carinho ♡</span></div>
   ${cats.length>2?`<div class="chips" role="group" aria-label="Categorias">${cats.map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${filtro===c}">${c!=='Tudo'?`<span class="dot" style="background:var(--${CATS[c]}-500)"></span>`:''}${c}</button>`).join('')}</div>`:''}
   <div class="grid">${list.length?list.map(card).join(''):'<p class="empty">Nada por aqui ainda.</p>'}</div>
+  <div class="homeshare" style="padding:16px 20px 0"><div class="share"><div class="lbl">Compartilhar a loja</div><div class="shbtns">
+    <a class="shb" id="sh-wa-home" target="_blank" rel="noopener"><span class="ic" style="background:var(--wa)"><svg class="f" aria-hidden="true"><use href="#i-wa"/></svg></span>WhatsApp</a>
+    <button class="shb" data-sh="home"><span class="ic" style="background:var(--uva-700)">${ico('link','')}</span>Copiar link</button>
+  </div></div></div>
   ${foot()}`;
   app.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filtro=b.dataset.cat;try{sessionStorage.setItem('mimo-cat',filtro)}catch(e){};catalog()});
+  document.getElementById('sh-wa-home').href='https://wa.me/?text='+encodeURIComponent('Olha os mimos da MimoBox 3D: presentes e lembrancinhas impressos em 3D\n'+LOJA.site);
+  app.querySelectorAll('[data-sh="home"]').forEach(b=>b.onclick=()=>copiar(LOJA.site));
 }
 function card(p){
   const extra=p.colors?`<div class="swatches" aria-label="${p.colors.length} cores">${p.colors.map(c=>`<span style="background:${c}"></span>`).join('')}</div>`:p.unit?`<span class="unit">${esc(p.unit)}</span>`:'';
